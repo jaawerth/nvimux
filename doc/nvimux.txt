@@ -88,6 +88,11 @@ Customizing                                              *nvimux-customizing*
 
 Nvimux allows several customizations on how to use it, as depicted below.
 
+g:nvimux_enable_var
+                  Sets what variable (environment or otherwise) to check to
+		  enable nvimux regardless of whether tmux is active.
+		  Defaults to>
+		    let g:nvimux_enable_var = '$NVIMUX_ENABLE'
 
 g:nvimux_prefix                              *nvimux_prefix* *g:nvimux_prefix*
                   Allows a different shortcut to nvimux commands.

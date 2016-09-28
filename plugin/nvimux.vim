@@ -13,13 +13,13 @@ function! s:term_only(cmd)
   endif
 endfunction
 
-function! s:is_enabled(a:enable_var)
-  let l:enable = eval(a:enable_var)
-  if l:enable || l:enable == "true" return v:true else return v:false endif
+function! s:is_forced(force_var)
+  let l:force = eval(a:force_var)
+  return l:force || l:force == 'true' || l:force == 'on' ? v:true : v:false
 endfunction
 
 " Variables
-call s:defn('g:nvimux_enable_var', '$NVIMUX_ENABLE')
+call s:defn('g:nvimux_force_var', '$NVIMUX_FORCE')
 call s:defn('g:nvimux_prefix', '<C-b>')
 call s:defn('g:nvimux_terminal_quit', '<C-\><C-n>')
 
@@ -167,6 +167,6 @@ function! NvimuxInit()
   endif
 endfunction
 
-if !exists('$TMUX') || s:is_enabled(g:nvimux_enable_var)
+if !exists('$TMUX') || s:is_forced(g:nvimux_force_var)
   call NvimuxInit()
 endif
