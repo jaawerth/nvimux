@@ -13,7 +13,13 @@ function! s:term_only(cmd)
   endif
 endfunction
 
+function! s:is_enabled(a:enable_var)
+  let l:enable = eval(a:enable_var)
+  if l:enable || l:enable == "true" return v:true else return v:false endif
+endfunction
+
 " Variables
+call s:defn('g:nvimux_enable_var', '$NVIMUX_ENABLE')
 call s:defn('g:nvimux_prefix', '<C-b>')
 call s:defn('g:nvimux_terminal_quit', '<C-\><C-n>')
 
@@ -116,8 +122,7 @@ function! NvimuxToggleTermFunc() abort
 endfunction
 
 " TMUX emulation itself
-if !exists('$TMUX')
-
+function! NvimuxInit()
   if exists('g:nvimux_open_term_by_default')
     call s:nvimux_bind_key('c', ':tabe\|'.g:nvimux_new_term.'<CR>', ['n', 'v', 'i', 't'])
     call s:nvimux_bind_key('t', ':tabe<CR>', ['n', 'v', 'i', 't'])
@@ -160,4 +165,8 @@ if !exists('$TMUX')
       call s:nvimux_raw_bind(b[0], b[1], b[2])
     endfor
   endif
+endfunction
+
+if !exists('$TMUX') || s:is_enabled(g:nvimux_enable_var)
+  call NvimuxInit()
 endif
